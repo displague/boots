@@ -1,5 +1,6 @@
 MAKEFLAGS += --no-builtin-rules
-.PHONY: ${binary} dc gen test
+IMAGE_REPO=quay.io/tinkerbell/boots
+.PHONY: ${binary} dc gen test push
 .SUFFIXES:
 
 binary := boots
@@ -30,3 +31,6 @@ run: ${binary}
 test:
 	docker-compose up -d --build cacher
 endif
+
+push:
+	docker buildx build --platform linux/arm64,linux/arm,linux/amd64 -t ${IMAGE_REPO} --push .
